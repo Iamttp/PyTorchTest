@@ -42,4 +42,4 @@ print("prediction：", iris_dataset['target_names'][prediction])
 
 # ---------------------------------------------------------评估模型
 y_pred = knn.predict(X_test)
-print("\n评估模型\nscore：", np.mean(y_pred == y_test))
+print("\n评估模型\nscore：", np.mean(y_pred == y_test), knn.score(X_test, y_test))
