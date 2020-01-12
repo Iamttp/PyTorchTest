@@ -54,11 +54,14 @@ class NeuralNetwork:
         return final_outputs
 
 
-n = NeuralNetwork(6, 6, 6, 0.3)
-for i in range(5000):
-    n.train([0.1, 0.2, 0.3, 0.4, 0.5, 0.6], [0.6, 0.5, 0.4, 0.3, 0.2, 0.1])
-    n.train([0.6, 0.5, 0.4, 0.3, 0.2, 0.1], [0.1, 0.2, 0.3, 0.4, 0.5, 0.6], )
-    if i % 500 == 0:
-        print(n.query([0.1, 0.2, 0.3, 0.4, 0.5, 0.6]))
-        print(n.query([0.6, 0.5, 0.4, 0.3, 0.2, 0.1]))
-        print(" ")
+# 三个数平均数测试
+n = NeuralNetwork(3, 3, 1, 0.3)
+for i in range(10000):
+    x = [numpy.random.randint(0, 10) / 10, numpy.random.randint(0, 10) / 10, numpy.random.randint(0, 10) / 10]
+    y = numpy.sum(x) / 3
+    n.train(x, y)
+    if i % 1000 == 0:
+        test = [numpy.random.randint(0, 10) / 10, numpy.random.randint(0, 10) / 10, numpy.random.randint(0, 10) / 10]
+        print(n.query(test))
+        print(numpy.sum(test) / 3)
+        print("")
