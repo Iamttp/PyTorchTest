@@ -24,7 +24,7 @@
 
 ---
 
-## 《动手学深度学习》(PyTorch版)
+# 《动手学深度学习》(PyTorch版)
 
 `https://tangshusen.me/Dive-into-DL-PyTorch/#/`
 
@@ -40,7 +40,13 @@
 
 `torchVisTest2.py` PyTorch 正常方式实现softmax回归
 
+`mlpTest.py` PyTorch 正常方式实现MLP
+
+`kaggleTest.py` Kaggle 房价预测
+
 ---
+
+## 深度学习基础
 
 ### 2. 预备知识
 
@@ -105,5 +111,21 @@
 
 ### `TODO` 3.12 权重衰减  3.13 丢弃法  3.14 正向传播、反向传播和计算图  3.15 数值稳定性和模型初始化
 
-### 3.16 实战Kaggle比赛：房价预测
+## 深度学习计算
+
+虽然Sequential等类可以使模型构造更加简单，但直接继承Module类可以极大地拓展模型构造的灵活性。
+
+可以通过Module类自定义神经网络中的层，从而可以被重复调用。
+
+通过save函数和load函数可以很方便地读写Tensor。
+
+通过save函数和load_state_dict函数可以很方便地读写模型的参数。
+
+PyTorch可以指定用来存储和计算的设备，如使用内存的CPU或者使用显存的GPU。在默认情况下，PyTorch会将数据创建在内存，然后利用CPU来计算。
+
+PyTorch要求计算的所有输入数据都在内存或同一块显卡的显存上。
+
+## 积神经网络
+
+
 

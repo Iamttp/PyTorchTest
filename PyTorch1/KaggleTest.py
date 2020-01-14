@@ -31,23 +31,19 @@ loss = torch.nn.MSELoss()
 
 
 def get_net(feature_num):
-    net = nn.Linear(feature_num, 1)
-    for param in net.parameters():
-        nn.init.normal_(param, mean=0, std=0.01)
+    # net = nn.Linear(feature_num, 1)
+    # for param in net.parameters():
+    #     nn.init.normal_(param, mean=0, std=0.01)
+    # return net
+    net = nn.Sequential(
+        nn.Linear(feature_num, 16),
+        nn.ReLU(),
+        nn.Linear(16, 1),
+    )
     return net
 
 
-def log_rmse(net, features, labels):
-    with torch.no_grad():
-        # 将小于1的值设成1，使得取对数时数值更稳定
-        clipped_preds = torch.max(net(features), torch.tensor(1.0))
-        rmse = torch.sqrt(2 * loss(clipped_preds.log(), labels.log()).mean())
-    return rmse.item()
-
-
-def train(net, train_features, train_labels, test_features, test_labels,
-          num_epochs, learning_rate, weight_decay, batch_size):
-    train_ls, test_ls = [], []
+def train(net, train_features, train_labels, num_epochs, learning_rate, weight_decay, batch_size):
     dataset = torch.utils.data.TensorDataset(train_features, train_labels)
     train_iter = torch.utils.data.DataLoader(dataset, batch_size, shuffle=True)
     # 这里使用了Adam优化算法
@@ -59,22 +55,17 @@ def train(net, train_features, train_labels, test_features, test_labels,
             optimizer.zero_grad()
             l.backward()
             optimizer.step()
-        train_ls.append(log_rmse(net, train_features, train_labels))
-        if test_labels is not None:
-            test_ls.append(log_rmse(net, test_features, test_labels))
-    return train_ls, test_ls
 
 
 def train_and_pred(train_features, test_features, train_labels, test_data,
                    num_epochs, lr, weight_decay, batch_size):
     net = get_net(train_features.shape[1])
-    train_ls, _ = train(net, train_features, train_labels, None, None,
-                        num_epochs, lr, weight_decay, batch_size)
+    train(net, train_features, train_labels, num_epochs, lr, weight_decay, batch_size)
     preds = net(test_features).detach().numpy()
     test_data['SalePrice'] = pd.Series(preds.reshape(1, -1)[0])
     submission = pd.concat([test_data['Id'], test_data['SalePrice']], axis=1)
     submission.to_csv('../kaggle_house/submission.csv', index=False)
 
 
-num_epochs, lr, weight_decay, batch_size = 100, 5, 0, 64
+num_epochs, lr, weight_decay, batch_size = 200, 5, 0, 64
 train_and_pred(train_features, test_features, train_labels, test_data, num_epochs, lr, weight_decay, batch_size)
