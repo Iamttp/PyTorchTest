@@ -161,4 +161,5 @@ PyTorch要求计算的所有输入数据都在内存或同一块显卡的显存�
 
 ![AlexNet](alexnet.png)
 
+推荐文章： `https://blog.csdn.net/weixin_42111770/article/details/80719302`
 
